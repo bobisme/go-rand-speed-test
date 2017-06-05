@@ -1,3 +1,10 @@
+The global rand is clear for concurrent use.  It accomplishes this by using a
+mutex under the hood.  This means that all your goroutines which use the
+global rand will end up waiting on each other anyway.  This mini project
+proposed a couple of alternatives.  Check out main_test.go.
+
+Run benchmarks:
+
     go test -bench=.
 
 All these tests have the same WaitGroup, inner--function loop in order to
