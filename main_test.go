@@ -12,6 +12,7 @@
 package main
 
 import (
+	crand "crypto/rand"
 	"math/rand"
 	"runtime"
 	"sync"
@@ -90,6 +91,23 @@ func BenchmarkRandSyncPool(b *testing.B) {
 					rng.Intn(10000000)
 				}
 				pool.Put(rng)
+				wg.Done()
+			}()
+		}
+		wg.Wait()
+	}
+}
+
+func BenchmarkCryptoRand(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		wg := sync.WaitGroup{}
+		wg.Add(maxProcs)
+		for j := 0; j < maxProcs; j++ {
+			func() {
+				bytes := make([]byte, 8)
+				for i := 0; i < innerLoopCount; i++ {
+					crand.Read(bytes)
+				}
 				wg.Done()
 			}()
 		}
