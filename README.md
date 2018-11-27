@@ -1,13 +1,13 @@
 The global rand is clear for concurrent use.  It accomplishes this by using a
 mutex under the hood.  This means that all your goroutines which use the
 global rand will end up waiting on each other anyway.  This mini project
-proposed a couple of alternatives.  Check out main_test.go.
+proposes a couple of alternatives.  Check out main_test.go.
 
 Run benchmarks:
 
     make
 
-All these tests have the same WaitGroup, inner--function loop in order to
+All these tests have the same WaitGroup, inner-function loop in order to
 try to maintain consistency.
 
 The point is to try to show how slow using the global rand source is and
